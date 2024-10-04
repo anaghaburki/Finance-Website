@@ -22,35 +22,35 @@ function Home() {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-8 bg-gray-100">
         {/* Welcome Message */}
-        <h1 className="text-3xl font-bold text-green-300 mb-6">
-          Welcome to your Finance Dashboard, {userName}!
+        <h1 className="text-3xl font-bold text-green-900 mb-6">
+          Welcome to your Finance Dashboard {userName}!
         </h1>
 
         {/* Add Record Button */}
         <Link to="/add-record">
-          <button className="bg-green-700 text-white p-2 rounded mb-8 hover:bg-green-600">
+          <button className="bg-green-900 text-white py-2 px-4 rounded-lg mb-8 hover:bg-green-700 transition-all">
             Add New Record
           </button>
         </Link>
 
         {/* Balance Section */}
-        <div className="bg-green-800 p-6 shadow-lg rounded-lg mb-8">
-          <h2 className="text-xl font-semibold text-green-300 mb-2">Current Balance</h2>
-          <p className="text-4xl text-green-200 font-bold">${balance}</p>
+        <div className="bg-white p-6 shadow-lg rounded-lg mb-8">
+          <h2 className="text-xl font-semibold text-green-900 mb-2">Current Balance</h2>
+          <p className="text-4xl text-green-700 font-bold">₹{balance}</p>
         </div>
 
         {/* Last 4 Logs Section */}
-        <div className="bg-green-800 p-6 shadow-lg rounded-lg mb-8">
-          <h2 className="text-xl font-semibold text-green-300 mb-2">Last 4 Logs</h2>
+        <div className="bg-white p-6 shadow-lg rounded-lg mb-8">
+          <h2 className="text-xl font-semibold text-green-900 mb-2">Last 4 Logs</h2>
           {lastLogs.length > 0 ? (
             <ul>
               {lastLogs.map((log, index) => (
-                <li key={index} className="flex justify-between py-2 border-b border-green-700">
-                  <span className="text-green-200">{log.description}</span>
-                  <span className={`font-bold ${log.amount > 0 ? 'text-green-400' : 'text-red-500'}`}>
-                    {log.amount > 0 ? '+' : ''}${log.amount}
+                <li key={index} className="flex justify-between py-2 border-b border-green-200">
+                  <span className="text-green-700">{log.description}</span>
+                  <span className={`font-bold ${log.amount > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {log.amount > 0 ? '+' : ''}₹{log.amount}
                   </span>
                 </li>
               ))}
@@ -61,11 +61,11 @@ function Home() {
         </div>
 
         {/* Savings Goal Section */}
-        <div className="bg-green-800 p-6 shadow-lg rounded-lg">
-          <h2 className="text-xl font-semibold text-green-300 mb-2">Savings Goal</h2>
+        <div className="bg-white p-6 shadow-lg rounded-lg">
+          <h2 className="text-xl font-semibold text-green-900 mb-2">Savings Goal</h2>
           {savingsGoal ? (
-            <p className="text-green-200">
-              You have saved ${savingsGoal.savedAmount}, which is {savingsGoal.percentage}% towards your goal of ${savingsGoal.goalAmount}.
+            <p className="text-green-700">
+              You have saved ₹{savingsGoal.savedAmount}, which is {savingsGoal.percentage}% towards your goal of ₹{savingsGoal.goalAmount}.
             </p>
           ) : (
             <p className="text-green-500">No savings goal yet. Set your savings goal!</p>

@@ -26,17 +26,17 @@ function AddRecord({ updateBalance, updateLogs }) {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 flex justify-center items-center">
-        <div className="bg-gray-800 p-8 rounded shadow-lg w-full max-w-md">
-          <h1 className="text-2xl font-bold text-green-300 mb-6">Add Record</h1>
+      <div className="flex-1 flex justify-center items-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+          <h1 className="text-2xl font-bold text-green-900 mb-6">Add Record</h1>
           <form onSubmit={handleAddRecord}>
             {/* Select Record Type */}
             <div className="mb-4">
-              <label className="block text-green-300 font-semibold mb-2">Record Type</label>
+              <label className="block text-green-900 font-semibold mb-2">Record Type</label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value)}
-                className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-green-100"
+                className="w-full p-2 bg-gray-50 border border-green-700 rounded"
               >
                 <option value="income">Income</option>
                 <option value="expense">Expense</option>
@@ -45,29 +45,31 @@ function AddRecord({ updateBalance, updateLogs }) {
 
             {/* Description */}
             <div className="mb-4">
-              <label className="block text-green-300 font-semibold mb-2">Description</label>
+              <label className="block text-green-900 font-semibold mb-2">Description</label>
               <input
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-                className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-green-100"
+                className="w-full p-2 bg-gray-50 border border-green-700 rounded"
+                placeholder="Enter description"
               />
             </div>
 
             {/* Amount */}
             <div className="mb-4">
-              <label className="block text-green-300 font-semibold mb-2">Amount</label>
+              <label className="block text-green-900 font-semibold mb-2">Amount</label>
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 required
-                className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-green-100"
+                className="w-full p-2 bg-gray-50 border border-green-700 rounded"
+                placeholder="Enter amount"
               />
             </div>
 
-            <button type="submit" className="w-full bg-green-700 text-white p-2 rounded hover:bg-green-600">
+            <button type="submit" className="w-full bg-green-900 text-white py-2 rounded-lg hover:bg-green-700 transition-all">
               Add Record
             </button>
           </form>

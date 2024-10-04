@@ -7,7 +7,6 @@ const AnalyticsPage = () => {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState(0);
   const [view, setView] = useState('monthly'); // Toggle state for period view
-
   const [newRecord, setNewRecord] = useState({ type: 'income', amount: '' });
 
   const handleRecordSubmit = (e) => {
@@ -39,7 +38,7 @@ const AnalyticsPage = () => {
         }
       }
     });
-    return [['Week', 'Income', 'Expenses'], ...weeklyData.map((data, index) => [`Week ${index + 1}`, ...data])];
+    return [['Week', 'Income', 'Expenses'], ...weeklyData.map((data, index) => [`Week ₹{index + 1}`, ...data])];
   };
 
   const calculateMonthlyData = () => {
@@ -56,7 +55,7 @@ const AnalyticsPage = () => {
         }
       }
     });
-    return [['Month', 'Income', 'Expenses'], ...monthlyData.map((data, index) => [`Month ${currentMonth - index + 1}`, ...data])];
+    return [['Month', 'Income', 'Expenses'], ...monthlyData.map((data, index) => [`Month ₹{currentMonth - index + 1}`, ...data])];
   };
 
   const calculateYearlyData = () => {
@@ -73,7 +72,7 @@ const AnalyticsPage = () => {
         }
       }
     });
-    return [['Year', 'Income', 'Expenses'], ...yearlyData.map((data, index) => [`${currentYear - index}`, ...data])];
+    return [['Year', 'Income', 'Expenses'], ...yearlyData.map((data, index) => [`₹{currentYear - index}`, ...data])];
   };
 
   const data = [
@@ -111,13 +110,13 @@ const AnalyticsPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-green-900">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col items-center p-6 text-white">
-        <h1 className="text-3xl font-bold mb-4">Analytics Dashboard</h1>
+      <div className="flex-1 flex flex-col items-center p-8">
+        <h1 className="text-3xl font-bold text-green-900 mb-4">Analytics Dashboard</h1>
 
         {/* Google Pie Chart for real-time income/expense */}
         <div className="w-full md:w-2/3 mb-6 flex justify-center">
@@ -133,25 +132,19 @@ const AnalyticsPage = () => {
         {/* Toggle Buttons for Bar chart views */}
         <div className="flex mb-4 space-x-4">
           <button
-            className={`px-4 py-2 rounded-md ${
-              view === 'weekly' ? 'bg-green-700' : 'bg-gray-400'
-            } hover:bg-green-800`}
+            className={`px-4 py-2 rounded-md ₹{view === 'weekly' ? 'bg-green-700' : 'bg-gray-400'} hover:bg-green-800`}
             onClick={() => toggleView('weekly')}
           >
             Weekly
           </button>
           <button
-            className={`px-4 py-2 rounded-md ${
-              view === 'monthly' ? 'bg-green-700' : 'bg-gray-400'
-            } hover:bg-green-800`}
+            className={`px-4 py-2 rounded-md ₹{view === 'monthly' ? 'bg-green-700' : 'bg-gray-400'} hover:bg-green-800`}
             onClick={() => toggleView('monthly')}
           >
             Monthly
           </button>
           <button
-            className={`px-4 py-2 rounded-md ${
-              view === 'yearly' ? 'bg-green-700' : 'bg-gray-400'
-            } hover:bg-green-800`}
+            className={`px-4 py-2 rounded-md ₹{view === 'yearly' ? 'bg-green-700' : 'bg-gray-400'} hover:bg-green-800`}
             onClick={() => toggleView('yearly')}
           >
             Yearly
@@ -164,13 +157,7 @@ const AnalyticsPage = () => {
             chartType="BarChart"
             width="100%"
             height="400px"
-            data={
-              view === 'weekly'
-                ? calculateWeeklyData()
-                : view === 'monthly'
-                ? calculateMonthlyData()
-                : calculateYearlyData()
-            }
+            data={view === 'weekly' ? calculateWeeklyData() : view === 'monthly' ? calculateMonthlyData() : calculateYearlyData()}
             options={barOptions}
           />
         </div>
@@ -180,7 +167,7 @@ const AnalyticsPage = () => {
           <select
             value={newRecord.type}
             onChange={(e) => setNewRecord({ ...newRecord, type: e.target.value })}
-            className="border rounded-md p-2 mb-2 bg-gray-700 text-white"
+            className="border rounded-md p-2 mb-2 bg-gray-50"
           >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
@@ -191,11 +178,11 @@ const AnalyticsPage = () => {
             value={newRecord.amount}
             onChange={(e) => setNewRecord({ ...newRecord, amount: e.target.value })}
             required
-            className="border rounded-md p-2 mb-2 bg-gray-700 text-white"
+            className="border rounded-md p-2 mb-2 bg-gray-50"
           />
           <button
             type="submit"
-            className="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-800"
+            className="bg-green-900 text-white px-4 py-2 rounded-md hover:bg-green-700"
           >
             Add Record
           </button>

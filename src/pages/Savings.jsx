@@ -84,10 +84,10 @@ function Savings() {
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold text-green-900">Current Savings Status</h2>
           <p className="text-green-700 mt-2">
-            <span className="font-bold">Goal: </span>${savingsGoal || 0}
+            <span className="font-bold">Goal: </span>₹{savingsGoal || 0}
           </p>
           <p className="text-green-700 mt-2">
-            <span className="font-bold">Saved Amount: </span>${savedAmount || 0}
+            <span className="font-bold">Saved Amount: </span>₹{savedAmount || 0}
           </p>
           <p className="text-green-700 mt-2">
             <span className="font-bold">Percentage Saved: </span>{(savingsPercentage || 0).toFixed(2)}%
