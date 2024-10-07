@@ -7,17 +7,47 @@ function AddRecord({ updateBalance, updateLogs }) {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
+  
+  // Define the API URL
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-  const handleAddRecord = (e) => {
+  const handleAddRecord = async (e) => {
     e.preventDefault();
     const recordAmount = type === 'income' ? parseFloat(amount) : -parseFloat(amount);
+    
+    // Prepare data for the request
+    const newRecord = {
+      type,
+      amount: recordAmount,
+      description,
+      date: new Date().toISOString().slice(0, 10),  // Format the date as YYYY-MM-DD
+    };
 
-    // Update balance and logs using parent functions
-    updateBalance(recordAmount);
-    updateLogs({ description, amount: recordAmount });
+    try {
+      // Make the POST request to the backend to save the record
+      const response = await fetch(`${API_URL}/api/records`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newRecord),
+      });
 
-    // Redirect back to home page after submission
-    navigate('/home');
+      if (response.ok) {
+        const savedRecord = await response.json();
+
+        // Update balance and logs using parent functions
+        updateBalance(recordAmount);
+        updateLogs({ description, amount: recordAmount, date: newRecord.date });
+
+        // Redirect back to home page after submission
+        navigate('/home');
+      } else {
+        console.error('Error adding record:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding record:', error);
+    }
   };
 
   return (

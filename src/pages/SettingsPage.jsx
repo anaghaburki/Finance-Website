@@ -3,9 +3,23 @@ import Sidebar from './components/Sidebar'; // Adjust the import based on your s
 
 const SettingsPage = ({ resetData }) => {
   const handleResetData = () => {
-    // Clear local storage and invoke reset function
-    localStorage.clear();
-    resetData();
+    // Call API to clear the database
+    fetch('http://localhost:5000/reset-data', {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Call the resetData function to update the frontend
+          resetData();
+          alert('All data has been cleared successfully.');
+        } else {
+          alert('Failed to clear data. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error resetting data:', error);
+        alert('Error resetting data. Please check your connection.');
+      });
   };
 
   return (
@@ -21,7 +35,7 @@ const SettingsPage = ({ resetData }) => {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-green-900 mb-4">Reset Data</h2>
           <p className="text-green-700 mb-6">
-            Resetting will clear all data stored locally, including your financial records and savings goals. This action cannot be undone.
+            Resetting will clear all data stored in the database, including your financial records and savings goals. This action cannot be undone.
           </p>
           <button
             onClick={handleResetData}

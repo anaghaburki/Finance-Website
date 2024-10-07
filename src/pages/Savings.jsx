@@ -8,50 +8,70 @@ function Savings() {
   const [savedAmount, setSavedAmount] = useState(0);
   const [savingsPercentage, setSavingsPercentage] = useState(0);
 
-  // Load savings data from local storage
+  // Load savings data from the database
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('savingsData'));
-    if (savedData) {
-      setSavedAmount(savedData.savedAmount);
-      setSavingsGoal(savedData.savingsGoal);
-      if (savedData.savingsGoal > 0) {
-        setSavingsPercentage((savedData.savedAmount / savedData.savingsGoal) * 100);
-      }
-    }
+    fetch('http://localhost:5000/savings')
+      .then(response => response.json())
+      .then(data => {
+        if (data) {
+          setSavedAmount(data.savedAmount || 0);
+          setSavingsGoal(data.savingsGoal || 0);
+          if (data.savingsGoal > 0) {
+            setSavingsPercentage((data.savedAmount / data.savingsGoal) * 100);
+          }
+        }
+      })
+      .catch(error => console.error('Error fetching savings data:', error));
   }, []);
 
-  // Save data to local storage
-  const saveToLocalStorage = (goal, amount) => {
+  // Save data to the database
+  const saveToDatabase = (goal, amount) => {
     const savingsData = {
-      savingsGoal: goal,
+      goal,
+      savingsGoal: parseFloat(goal),
       savedAmount: amount,
     };
-    localStorage.setItem('savingsData', JSON.stringify(savingsData));
+
+    fetch('http://localhost:5000/savings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(savingsData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Saved to database:', data);
+      })
+      .catch(error => console.error('Error saving data:', error));
   };
 
   const handleAddGoal = (e) => {
     e.preventDefault();
-    if (savingsAmount && goal) {
-      const totalSaved = savedAmount + parseFloat(savingsAmount);
-      saveToLocalStorage(goal, totalSaved);
+    const parsedSavingsAmount = parseFloat(savingsAmount);
+
+    if (parsedSavingsAmount > 0 && goal.trim() !== '') {
+      const totalSaved = savedAmount + parsedSavingsAmount;
+      saveToDatabase(goal, totalSaved);
       setSavedAmount(totalSaved);
       setSavingsGoal(goal);
-      setSavingsPercentage((totalSaved / goal) * 100);
+      if (goal > 0) {
+        setSavingsPercentage((totalSaved / goal) * 100);
+      }
       setSavingsAmount('');
       setGoal('');
+    } else {
+      alert('Please enter a valid goal and amount to save.');
     }
   };
 
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar Component */}
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="flex-1 p-8 bg-gray-100">
+      <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold text-green-900 mb-6">Savings Goals</h1>
 
-        {/* Savings Goal Form */}
         <form onSubmit={handleAddGoal} className="mb-6">
           <div className="mb-4">
             <label className="block text-green-900 font-semibold mb-2">Goal Description</label>
@@ -80,7 +100,6 @@ function Savings() {
           </button>
         </form>
 
-        {/* Savings Status Section */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold text-green-900">Current Savings Status</h2>
           <p className="text-green-700 mt-2">

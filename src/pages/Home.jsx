@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import { Link } from 'react-router-dom';
 
@@ -8,13 +8,35 @@ function Home() {
   const [lastLogs, setLastLogs] = useState([]);  // No logs initially
   const [savingsGoal, setSavingsGoal] = useState(null);  // No goals initially
 
-  const updateBalance = (amount) => {
-    setBalance((prevBalance) => prevBalance + amount);
-  };
+  // Fetch current balance from the database
+  useEffect(() => {
+    fetch('http://localhost:5000/balance')
+      .then(response => response.json())
+      .then(data => {
+        setBalance(data.balance || 0);
+      })
+      .catch(error => console.error('Error fetching balance:', error));
+  }, []);
 
-  const updateLogs = (newLog) => {
-    setLastLogs((prevLogs) => [newLog, ...prevLogs.slice(0, 3)]);
-  };
+  // Fetch last 4 logs from the database
+  useEffect(() => {
+    fetch('http://localhost:5000/logs')
+      .then(response => response.json())
+      .then(data => {
+        setLastLogs(data || []);
+      })
+      .catch(error => console.error('Error fetching logs:', error));
+  }, []);
+
+  // Fetch savings goal from the database
+  useEffect(() => {
+    fetch('http://localhost:5000/savings')
+      .then(response => response.json())
+      .then(data => {
+        setSavingsGoal(data);
+      })
+      .catch(error => console.error('Error fetching savings goal:', error));
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-green-900">
