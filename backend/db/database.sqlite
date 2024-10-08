@@ -1,0 +1,15 @@
+-- Create the Records Table
+CREATE TABLE IF NOT EXISTS records (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL, -- Type can be 'income' or 'expense'
+    amount REAL NOT NULL, -- The monetary amount of the record
+    date TEXT NOT NULL -- Date of the record in YYYY-MM-DD format
+);
+
+-- Create the Savings Table
+CREATE TABLE IF NOT EXISTS savings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    goal TEXT NOT NULL, -- Description of the savings goal
+    savedAmount REAL NOT NULL, -- Amount saved toward the goal
+    targetAmount REAL NOT NULL -- Total target amount for the goal
+);
